@@ -1,0 +1,43 @@
+name: Scheduled Bot Run
+
+on:
+  schedule:
+    # Каждые 2 часа по чётным: 12:00, 14:00, 16:00, 18:00, 20:00, 22:00 UTC
+    - cron: '0 12,14,16,18,20,22 * * *'
+  workflow_dispatch:  # Можно запустить вручную
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run bot for 5 minutes
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          AUTHORIZED_USER_ID: ${{ secrets.AUTHORIZED_USER_ID }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TWITTER_API_KEY: temporary
+          TWITTER_API_SECRET: temporary
+          TWITTER_ACCESS_TOKEN: temporary
+          TWITTER_ACCESS_SECRET: temporary
+          TWITTER_BEARER_TOKEN: temporary
+          OPENAI_MODEL: gpt-4o-mini
+          LOG_LEVEL: INFO
+        run: |
+          echo "🤖 Starting scheduled bot run at $(date)"
+          timeout 300 python main.py || true
+          echo "✅ Bot run completed at $(date)"
