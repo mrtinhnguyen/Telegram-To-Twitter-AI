@@ -1,5 +1,4 @@
 """Configuration settings for the bot."""
-
 import os
 import sys
 from pathlib import Path
@@ -47,10 +46,10 @@ class Config:
             'TELEGRAM_BOT_TOKEN': self.TELEGRAM_BOT_TOKEN,
             'TELEGRAM_CHANNEL_ID': self.TELEGRAM_CHANNEL_ID,
             'AUTHORIZED_USER_ID': self.AUTHORIZED_USER_ID,
-            'TWITTER_API_KEY': self.TWITTER_API_KEY,
-            'TWITTER_API_SECRET': self.TWITTER_API_SECRET,
-            'TWITTER_ACCESS_TOKEN': self.TWITTER_ACCESS_TOKEN,
-            'TWITTER_ACCESS_SECRET': self.TWITTER_ACCESS_SECRET,
+            # 'TWITTER_API_KEY': self.TWITTER_API_KEY,
+            # 'TWITTER_API_SECRET': self.TWITTER_API_SECRET,
+            # 'TWITTER_ACCESS_TOKEN': self.TWITTER_ACCESS_TOKEN,
+            # 'TWITTER_ACCESS_SECRET': self.TWITTER_ACCESS_SECRET,
             'OPENAI_API_KEY': self.OPENAI_API_KEY,
         }
         
