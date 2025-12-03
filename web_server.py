@@ -7,6 +7,7 @@ Keeps the service alive while running the Telegram bot in background.
 import threading
 import sys
 import os
+import asyncio
 from flask import Flask
 from bot.telegram_handler import TelegramHandler
 from utils.logger import setup_logger
@@ -38,6 +39,10 @@ def run_bot():
     """Run the Telegram bot in a separate thread."""
     global bot_handler
     try:
+        # Create new event loop for this thread
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
         logger.info("=" * 60)
         logger.info("Bot Cầu Nối Nội Dung Mạng Xã Hội")
         logger.info("=" * 60)
