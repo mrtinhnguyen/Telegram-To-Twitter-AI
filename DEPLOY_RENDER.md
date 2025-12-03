@@ -28,19 +28,27 @@ git push origin main
 
 ## 📝 Bước 2: Tạo File Cấu Hình Render
 
-File `render.yaml` đã được tạo sẵn trong project. Nếu chưa có, tạo file mới:
+File `render.yaml` đã được tạo sẵn trong project. Bot sử dụng **Web Service** (thay vì Background Worker) để có thể dùng free tier.
 
+**Giải pháp**: Tạo một web server đơn giản (Flask) để giữ service hoạt động, đồng thời chạy bot trong background thread.
+
+File `render.yaml`:
 ```yaml
 services:
-  - type: worker
+  - type: web
     name: telegram-twitter-bot
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python main.py
+    startCommand: python web_server.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0
+    plan: free
 ```
+
+**Lưu ý**: 
+- Sử dụng `web_server.py` thay vì `main.py`
+- File `web_server.py` đã được tạo sẵn, chạy cả Flask server và bot
 
 ## 🌐 Bước 3: Tạo Service Trên Render
 
@@ -49,10 +57,11 @@ services:
 1. Truy cập [Render Dashboard](https://dashboard.render.com)
 2. Đăng nhập bằng GitHub account (khuyến nghị)
 
-### 3.2. Tạo New Web Service (hoặc Background Worker)
+### 3.2. Tạo New Web Service
 
-1. Click **"New +"** → **"Background Worker"**
-   - ⚠️ **Lưu ý**: Chọn "Background Worker" chứ không phải "Web Service" vì bot không cần HTTP endpoint
+1. Click **"New +"** → **"Web Service"**
+   - ✅ **Lưu ý**: Chọn "Web Service" để có thể dùng free tier
+   - Bot sẽ chạy trong background thread, web server chỉ để giữ service hoạt động
 
 2. **Connect Repository**:
    - Chọn GitHub repository chứa code bot
@@ -62,8 +71,8 @@ services:
    - **Name**: `telegram-twitter-bot` (hoặc tên bạn muốn)
    - **Environment**: `Python 3`
    - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python main.py`
-   - **Plan**: Chọn **Free** (đủ cho bot nhỏ) hoặc **Starter** ($7/tháng)
+   - **Start Command**: `python web_server.py` ⚠️ **Quan trọng**: Dùng `web_server.py` không phải `main.py`
+   - **Plan**: Chọn **Free** (có thể sleep sau 15 phút) hoặc **Starter** ($7/tháng - chạy 24/7)
 
 ### 3.3. Cấu Hình Environment Variables
 

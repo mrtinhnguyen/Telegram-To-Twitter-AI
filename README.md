@@ -247,31 +247,6 @@ social-content-bridge/
 **Telegram:**
 - Completely free!
 
-## 🚀 Deployment
-
-### Deploy to Render (Recommended)
-
-📖 **Xem hướng dẫn chi tiết**: [DEPLOY_RENDER.md](DEPLOY_RENDER.md)
-
-Tóm tắt nhanh:
-1. Push code lên GitHub
-2. Tạo Background Worker trên [Render](https://render.com)
-3. Cấu hình environment variables
-4. Deploy và kiểm tra logs
-
-**Lưu ý**: 
-- Free tier có thể sleep sau 15 phút
-- Starter plan ($7/tháng) để chạy 24/7
-
-### Deploy to Other Platforms
-
-Bot có thể deploy lên:
-- **Render** (khuyến nghị) - [Hướng dẫn](DEPLOY_RENDER.md)
-- **Heroku** - Tương tự Render
-- **Railway** - Tương tự Render
-- **VPS** - Chạy `python main.py` trực tiếp
-- **Docker** - Tạo Dockerfile (có thể thêm sau)
-
 ## 🔄 Updates and Maintenance
 
 ### Update dependencies
