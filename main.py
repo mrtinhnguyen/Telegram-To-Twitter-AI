@@ -17,7 +17,7 @@ def main():
     """Main entry point."""
     try:
         logger.info("=" * 60)
-        logger.info("Social Content Bridge Bot")
+        logger.info("Bot Cầu Nối Nội Dung Mạng Xã Hội")
         logger.info("=" * 60)
         
         # Initialize and run bot
@@ -25,10 +25,10 @@ def main():
         handler.run()
         
     except KeyboardInterrupt:
-        logger.info("\n👋 Bot stopped by user")
+        logger.info("\n👋 Bot đã dừng bởi người dùng")
         sys.exit(0)
     except Exception as e:
-        logger.error(f"❌ Fatal error: {e}", exc_info=True)
+        logger.error(f"❌ Lỗi nghiêm trọng: {e}", exc_info=True)
         sys.exit(1)
 
 

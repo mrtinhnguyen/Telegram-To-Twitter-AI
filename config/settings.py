@@ -46,18 +46,19 @@ class Config:
             'TELEGRAM_BOT_TOKEN': self.TELEGRAM_BOT_TOKEN,
             'TELEGRAM_CHANNEL_ID': self.TELEGRAM_CHANNEL_ID,
             'AUTHORIZED_USER_ID': self.AUTHORIZED_USER_ID,
-            # 'TWITTER_API_KEY': self.TWITTER_API_KEY,
-            # 'TWITTER_API_SECRET': self.TWITTER_API_SECRET,
-            # 'TWITTER_ACCESS_TOKEN': self.TWITTER_ACCESS_TOKEN,
-            # 'TWITTER_ACCESS_SECRET': self.TWITTER_ACCESS_SECRET,
+            'TWITTER_API_KEY': self.TWITTER_API_KEY,
+            'TWITTER_API_SECRET': self.TWITTER_API_SECRET,
+            'TWITTER_ACCESS_TOKEN': self.TWITTER_ACCESS_TOKEN,
+            'TWITTER_ACCESS_SECRET': self.TWITTER_ACCESS_SECRET,
+            'TWITTER_BEARER_TOKEN': self.TWITTER_BEARER_TOKEN,
             'OPENAI_API_KEY': self.OPENAI_API_KEY,
         }
         
         missing = [key for key, value in required_settings.items() if not value]
         
         if missing:
-            print(f"❌ Error: Missing required environment variables: {', '.join(missing)}")
-            print("Please check your .env file and make sure all required variables are set.")
+            print(f"❌ Lỗi: Thiếu các biến môi trường bắt buộc: {', '.join(missing)}")
+            print("Vui lòng kiểm tra file .env của bạn và đảm bảo tất cả các biến bắt buộc đã được thiết lập.")
             sys.exit(1)
 
 

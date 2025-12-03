@@ -15,7 +15,7 @@ A Telegram bot that automatically republishes content to your Telegram channel a
 ## ✨ Features
 
 - 🤖 **AI Processing**: Uses GPT-4o mini to improve text quality
-- 🌍 **Auto Translation**: Translates Russian to English automatically
+- 🌍 **Auto Translation**: Translates Vietnamese to English automatically
 - ✂️ **Smart Formatting**: Creates full and short (≤280 chars) versions
 - 🏷️ **Hashtags**: Automatically adds relevant hashtags
 - 📸 **Image Support**: Handles images with optimization
@@ -143,7 +143,7 @@ Social Content Bridge Bot
 3. Forward any message to the bot (text and/or image)
 4. Bot will automatically:
    - Process text with AI
-   - Translate if Russian
+   - Translate if Vietnamese
    - Improve style
    - Create short version
    - Publish to Telegram channel (full version)
@@ -157,7 +157,7 @@ Social Content Bridge Bot
 ### Supported Content
 
 ✅ **Supported:**
-- Text messages (any language, Russian → English)
+- Text messages (any language, Vietnamese → English)
 - Messages with images (uses first image)
 - Image-only messages (AI generates caption)
 
@@ -246,6 +246,31 @@ social-content-bridge/
 
 **Telegram:**
 - Completely free!
+
+## 🚀 Deployment
+
+### Deploy to Render (Recommended)
+
+📖 **Xem hướng dẫn chi tiết**: [DEPLOY_RENDER.md](DEPLOY_RENDER.md)
+
+Tóm tắt nhanh:
+1. Push code lên GitHub
+2. Tạo Background Worker trên [Render](https://render.com)
+3. Cấu hình environment variables
+4. Deploy và kiểm tra logs
+
+**Lưu ý**: 
+- Free tier có thể sleep sau 15 phút
+- Starter plan ($7/tháng) để chạy 24/7
+
+### Deploy to Other Platforms
+
+Bot có thể deploy lên:
+- **Render** (khuyến nghị) - [Hướng dẫn](DEPLOY_RENDER.md)
+- **Heroku** - Tương tự Render
+- **Railway** - Tương tự Render
+- **VPS** - Chạy `python main.py` trực tiếp
+- **Docker** - Tạo Dockerfile (có thể thêm sau)
 
 ## 🔄 Updates and Maintenance
 

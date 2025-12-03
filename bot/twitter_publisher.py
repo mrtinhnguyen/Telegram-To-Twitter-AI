@@ -32,7 +32,28 @@ class TwitterPublisher:
         )
         self.api = tweepy.API(auth)
     
-    async def publish(self, text: str, image_path: Optional[Path] = None) -> bool:
+    def test_connection(self) -> tuple[bool, str]:
+        """
+        Test Twitter API connection and permissions.
+        
+        Returns:
+            Tuple of (success: bool, message: str)
+        """
+        try:
+            # Try to get user info to verify permissions
+            me = self.client.get_me()
+            if me.data:
+                return True, f"✅ Kết nối Twitter thành công: @{me.data.username}"
+            return False, "❌ Không thể xác thực với Twitter API"
+        except tweepy.TweepyException as e:
+            error_msg = str(e)
+            if "403" in error_msg or "Forbidden" in error_msg or "oauth1" in error_msg.lower():
+                return False, "❌ Lỗi quyền OAuth! Vui lòng kiểm tra cấu hình Twitter API (xem log chi tiết)"
+            return False, f"❌ Lỗi kết nối Twitter: {error_msg}"
+        except Exception as e:
+            return False, f"❌ Lỗi không xác định: {str(e)}"
+    
+    async def publish(self, text: str, image_path: Optional[Path] = None) -> tuple[bool, Optional[str]]:
         """
         Publish tweet to Twitter.
         
@@ -41,7 +62,8 @@ class TwitterPublisher:
             image_path: Optional path to image
             
         Returns:
-            True if published successfully, False otherwise
+            Tuple of (success: bool, tweet_url: Optional[str])
+            tweet_url is None if failed or username not available
         """
         try:
             # Validate text length
@@ -69,12 +91,37 @@ class TwitterPublisher:
             else:
                 response = self.client.create_tweet(text=text)
             
-            logger.info(f"✅ Published to Twitter: {response.data['id']}")
-            return True
+            tweet_id = response.data['id']
+            logger.info(f"✅ Published to Twitter: {tweet_id}")
+            
+            # Get username to create tweet URL
+            try:
+                me = self.client.get_me()
+                if me.data and me.data.username:
+                    username = me.data.username
+                    tweet_url = f"https://twitter.com/{username}/status/{tweet_id}"
+                    return True, tweet_url
+            except Exception as e:
+                logger.warning(f"Could not get username for tweet URL: {e}")
+                # Return success but without URL
+                return True, None
+            
+            return True, None
             
         except tweepy.TweepyException as e:
+            error_msg = str(e)
             logger.error(f"❌ Failed to publish to Twitter: {e}")
-            return False
+            
+            # Provide helpful error messages
+            if "403" in error_msg or "Forbidden" in error_msg or "oauth1" in error_msg.lower():
+                logger.error("⚠️ Lỗi quyền OAuth! Vui lòng kiểm tra:")
+                logger.error("1. Vào Twitter Developer Portal: https://developer.twitter.com/en/portal/dashboard")
+                logger.error("2. Chọn app của bạn → Settings → User authentication settings")
+                logger.error("3. Đảm bảo OAuth 1.0a được bật với quyền 'Read and Write'")
+                logger.error("4. Tạo lại Access Token và Access Token Secret sau khi thay đổi quyền")
+                logger.error("5. Cập nhật TWITTER_ACCESS_TOKEN và TWITTER_ACCESS_SECRET trong file .env")
+            
+            return False, None
         except Exception as e:
             logger.error(f"❌ Unexpected error publishing to Twitter: {e}")
-            return False
+            return False, None

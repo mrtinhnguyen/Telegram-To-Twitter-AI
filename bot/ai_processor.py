@@ -128,7 +128,7 @@ Original text:
 {text}
 
 Tasks:
-1. If the text is in Russian, translate it to English
+1. If the text is in Vietnamese, translate it to English
 2. Improve the writing style to be engaging and professional
 3. Keep the main message and meaning intact
 4. Preserve any links or URLs as-is
@@ -192,8 +192,8 @@ SHORT VERSION:
         except Exception as e:
             logger.error(f"Failed to generate image description: {e}")
             return {
-                'full_text': "Check out this image! 📸",
-                'short_text': "Check out this image! 📸 #photo #image"
+                'full_text': "Xem hình ảnh này! 📸",
+                'short_text': "Xem hình ảnh này! 📸 #photo #image"
             }
     
     def _parse_response(self, response: str) -> tuple[str, str]:
@@ -252,28 +252,3 @@ SHORT VERSION:
             short = short[:277] + "..."
         
         return short
-```
-
----
-
-## 📋 Что изменилось:
-
-1. ✅ Добавлен метод `_clean_forwarded_text()` - удаляет подписи из пересланных сообщений
-2. ✅ В `process_message()` добавлен вызов очистки текста
-3. ✅ Улучшена логика очистки - убирает:
-   - Строки с `|` (типа "RU | BigLiquid | Pro Channel")
-   - Строки начинающиеся с `@` (типа "@meduzalive")
-   - Разделители (`—`, `___`, и т.д.)
-   - Пустые строки в начале и конце
-
----
-
-## 🔧 Что делать:
-
-1. **Откройте** `bot/ai_processor.py` на GitHub
-2. **Нажмите Edit**
-3. **Удалите всё** содержимое
-4. **Вставьте** код выше
-5. **Commit changes**: 
-```
-   Add automatic cleaning of forwarded message signatures
