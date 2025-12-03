@@ -35,40 +35,37 @@ def health():
     return {'status': 'healthy'}, 200
 
 
-def run_bot():
-    """Run the Telegram bot in a separate thread."""
-    global bot_handler
+def run_flask():
+    """Run Flask web server in a separate thread."""
+    port = int(os.environ.get('PORT', 10000))
+    logger.info(f"🌐 Web server đang chạy trên port {port}")
+    logger.info("💡 Health check: http://localhost:{}/health".format(port))
+    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
+
+
+def main():
+    """Main entry point - starts both web server and bot."""
+    global bot_handler, bot_thread
+    
+    # Start Flask web server in background thread (to keep service alive)
+    flask_thread = threading.Thread(target=run_flask, daemon=True)
+    flask_thread.start()
+    logger.info("🌐 Flask server đã khởi động trong background thread")
+    
+    # Run bot in main thread (needed for signal handlers)
     try:
-        # Create new event loop for this thread
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        
         logger.info("=" * 60)
         logger.info("Bot Cầu Nối Nội Dung Mạng Xã Hội")
         logger.info("=" * 60)
         
         bot_handler = TelegramHandler()
         bot_handler.run()
+    except KeyboardInterrupt:
+        logger.info("\n👋 Bot đã dừng bởi người dùng")
+        sys.exit(0)
     except Exception as e:
         logger.error(f"❌ Lỗi nghiêm trọng khi chạy bot: {e}", exc_info=True)
         sys.exit(1)
-
-
-def main():
-    """Main entry point - starts both web server and bot."""
-    global bot_thread
-    
-    # Start bot in background thread
-    bot_thread = threading.Thread(target=run_bot, daemon=True)
-    bot_thread.start()
-    logger.info("🤖 Bot đã khởi động trong background thread")
-    
-    # Start Flask web server (this will keep the service alive)
-    port = int(os.environ.get('PORT', 10000))
-    logger.info(f"🌐 Web server đang chạy trên port {port}")
-    logger.info("💡 Health check: http://localhost:{}/health".format(port))
-    
-    app.run(host='0.0.0.0', port=port, debug=False)
 
 
 if __name__ == "__main__":
