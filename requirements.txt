@@ -21,3 +21,6 @@ aiohttp>=3.10.11
 
 # Logging
 colorlog>=6.8.0
+
+# Web server (for Render deployment)
+Flask>=3.0.0
